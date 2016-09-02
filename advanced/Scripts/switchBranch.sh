@@ -70,7 +70,7 @@ echo "::: Switching to master branch"
     ${SUDO} pihole -up
 }
 
-}if [[ $# = 0 ]]; then
+if [[ $# = 0 ]]; then
 	helpFunc
 fi
 
