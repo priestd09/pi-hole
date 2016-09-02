@@ -55,7 +55,11 @@ function updateDashboardFunc {
 function updatePiholeFunc {
     echo "::: Fetching latest changes from Github..."
     cd /etc/.pihole
+    #Kill off any local changes to the repo
+    ${SUDO} git reset --hard
+    #Pull down latest changes
     ${SUDO} git pull
+    #install
     ${SUDO} /etc/.pihole/automated\ install/basic-install.sh pihole
     exit 1
 }
@@ -93,6 +97,11 @@ function versionFunc {
     exit 1
 }
 
+function switchFunc{
+    ${SUDO} /opt/pihole/switchBranch.sh "$@"
+}
+
+}
 function helpFunc {
     echo "::: Control all PiHole specific functions!"
     echo ":::"
@@ -112,6 +121,7 @@ function helpFunc {
     echo ":::  -h, help                 Show this help dialog"
     echo ":::  -v, version              Show current versions"
     echo ":::  -q, query                Query the adlists for a specific domain"
+    echo ":::  -sw, switch              Fancy something more bleeding edge? Switch to dev branch!"
     echo ":::  uninstall                Uninstall Pi-Hole from your system :(!"
     exit 1
 }
@@ -134,6 +144,7 @@ case "$1" in
 "-h" | "help"				) helpFunc;;
 "-v" | "version"            ) versionFunc;;
 "-q" | "query"              ) queryFunc "$@";;
+"-sw" | "switch"            ) switchFunc "$@";;
 "uninstall"					) uninstallFunc;;
 *                    		) helpFunc;;
 esac
